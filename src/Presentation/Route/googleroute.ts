@@ -14,7 +14,7 @@ const repo = new UserRepositoryMongo();
 const JWT_SECRET = (process.env.JWT_SECRET ?? "changeme") as jwt.Secret;
 const JWT_EXPIRES = process.env.JWT_EXPIRES_IN ?? "1d";
 const CALLBACK_BASE = process.env.OAUTH_CALLBACK_BASE ?? "http://localhost:3000/api/auth";
-const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
+const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:49705";
 const DEEP_LINK = process.env.FRONTEND_DEEP_LINK ?? process.env.MOBILE_DEEP_LINK ?? "myapp://auth";
 
 type StoredUser = { id: any; email: string; name: string; passwordHash: string; createdAt: Date };

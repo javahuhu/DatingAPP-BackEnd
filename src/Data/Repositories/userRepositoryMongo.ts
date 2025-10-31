@@ -1,4 +1,4 @@
-// src/Data/Repositories/UserRepositoryMongo.ts
+// src/Data/Repositories/userRepositoryMongo.ts
 import { Types } from 'mongoose';
 import UserModel from '../Model/userModel.js';
 import type { IUserDoc } from '../Model/userModel.js';
@@ -57,6 +57,11 @@ export default class UserRepositoryMongo implements UserRepository {
       age: doc.age,
       profilePicture: doc.profilePicture,
       profilePicturePublicId: doc.profilePicturePublicId,
+      // new fields
+      personality: doc.personality,
+      motivation: doc.motivation,
+      frustration: doc.frustration,
+      tags: doc.tags, // ADD THIS LINE
     };
   }
 
@@ -74,15 +79,41 @@ export default class UserRepositoryMongo implements UserRepository {
       age: doc.age,
       profilePicture: doc.profilePicture,
       profilePicturePublicId: doc.profilePicturePublicId,
+      // new fields
+      personality: doc.personality,
+      motivation: doc.motivation,
+      frustration: doc.frustration,
+      tags: doc.tags, // ADD THIS LINE
     };
   }
 
-  // 🆕 Update user profile fields (no image upload)
-  async updateProfileFields(id: string, data: { name?: string; age?: number; bio?: string }) {
+  /**
+   * Update user profile fields (no image upload).
+   * Accepts optional values and only sets fields that are explicitly provided.
+   */
+  async updateProfileFields(id: string, data: {
+    name?: string;
+    age?: number;
+    bio?: string;
+    personality?: string;
+    motivation?: string;
+    frustration?: string;
+    tags?: string; // ADD THIS LINE
+  }) {
     const update: any = {};
     if (data.name !== undefined) update.name = data.name;
     if (data.age !== undefined) update.age = data.age;
     if (data.bio !== undefined) update.bio = data.bio;
+    if (data.personality !== undefined) update.personality = data.personality;
+    if (data.motivation !== undefined) update.motivation = data.motivation;
+    if (data.frustration !== undefined) update.frustration = data.frustration;
+    if (data.tags !== undefined) update.tags = data.tags; // ADD THIS LINE
+
+    // only proceed if there is something to update
+    if (Object.keys(update).length === 0) {
+      const current = await UserModel.findById(id).lean();
+      return current;
+    }
 
     const updated = await UserModel.findByIdAndUpdate(id, update, { new: true }).lean();
     return updated;

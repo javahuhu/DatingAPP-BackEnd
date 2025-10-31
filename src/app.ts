@@ -7,12 +7,17 @@ import passport from 'passport';
 import registerAPI from './Presentation/Route/registerRoute.js';
 import loginAPI from './Presentation/Route/loginRoute.js';
 import link from './Presentation/Route/linkRoute.js';
-import socialAPI from './Presentation/Route/socialRoute.js';
+import socialAPI from './Presentation/Route/googleroute.js';
 import profileAPI from './Presentation/Route/profileRoute.js';
 import existprofile from './Presentation/Route/getexistprofile.js';
-
-
+import facebookAPI from './Presentation/Route/facebookroute.js';
+import discoveryRoute from './Presentation/Route/discoveryRoute.js'
+import discoverySentRoute from './Presentation/Route/discoverysentRoute.js'
+import messageRoute from './Presentation/Route/messageRoute.js';
+import unmatchRoute from './Presentation/Route/unmatchRoute.js';
+import matchChek from './Presentation/Route/ismatch_route.js';
 dotenv.config();
+
 
 const app = express();
 
@@ -33,8 +38,13 @@ app.use('/api/auth', loginAPI);
 app.use('/api/auth', link);
 app.use('/api/auth', socialAPI);
 app.use('/api/profile', profileAPI);
-app.use('/api/profile/me', existprofile);
-
+app.use('/api/profile/megl', existprofile);
+app.use('/api/auth/mefb', facebookAPI);
+app.use('/api/discovery', discoveryRoute);
+app.use('/api/discovery', discoverySentRoute);
+app.use('/api/messages', messageRoute); 
+app.use('/api/discovery', unmatchRoute); 
+app.use('/api/discovery', matchChek);
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
 const PORT = Number(process.env.PORT) || 3000;
